@@ -88,8 +88,9 @@ app.post('/articles/add',function(req,res){
         }
     });
 });  
-//load edit form
 
+
+//load edit form
 app.get('/article/edit/:id',function(req,res){
     Article.findById(req.params.id,function(err, article){
        res.render('edit_article',{
@@ -99,6 +100,7 @@ app.get('/article/edit/:id',function(req,res){
     });
 });
 
+
 //edit submit
 app.post('/articles/edit/:id',function(req,res){
     let article = {};
@@ -107,6 +109,7 @@ app.post('/articles/edit/:id',function(req,res){
     article.body = req.body.body;
 
     let query = {_id:req.params.id}
+
     Article.update(query, article, function(err){
         if(err){
             console.log(err);
@@ -118,6 +121,18 @@ app.post('/articles/edit/:id',function(req,res){
     });
 });  
 
+app.delete('/article/:id', function(req, res){
+    let query = { _id:req.params.id}
+
+    Article.remove(query, function(err){
+
+        if(err){
+            console.log(err);
+        }
+        
+        res.send('success');
+    });
+});
 
 //start server
 app.listen(3000,function(){

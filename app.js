@@ -3,6 +3,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
 const expressLayouts = require('express-ejs-layouts');
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 mongoose.connect('mongodb://localhost/backend');
 let db = mongoose.connection;
 
@@ -35,17 +38,41 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+//express session middleware
+//tre sa fie aici nu stiu ce face
 
-//get single argicle
-app.get('/article/:id',function(req,res){
-    Article.findById(req.params.id,function(err, article){
-       res.render('article',{
-          article:article
-       });
-    });
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  
+}));
+
+//express messages middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next){
+    res.locals.messages = require('express-messages')(req, res);
+    next();
+
 });
 
+// express validator middleware
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
 
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 
 //home route
 app.get('/', function(req,res){
@@ -62,78 +89,11 @@ app.get('/', function(req,res){
     });
 });
 
-// add route
-app.get('/articles/add', function(req,res){
-
-        res.render('add_article',{
-        title:'Add articles',
-        
-    });
-    });
-  
-//add submit post
-app.post('/articles/add',function(req,res){
-    let article = new Article();
-    article.title = req.body.title;
-    article.author = req.body.author;
-    article.body = req.body.body;
-
-    article.save(function(err){
-        if(err){
-            console.log(err);
-            return;
-        }
-        else{
-           res.redirect('/'); 
-        }
-    });
-});  
-
-
-//load edit form
-app.get('/article/edit/:id',function(req,res){
-    Article.findById(req.params.id,function(err, article){
-       res.render('edit_article',{
-          title:'edit article',
-          article:article
-       });
-    });
-});
-
-
-//edit submit
-app.post('/articles/edit/:id',function(req,res){
-    let article = {};
-    article.title = req.body.title;
-    article.author = req.body.author;
-    article.body = req.body.body;
-
-    let query = {_id:req.params.id}
-
-    Article.update(query, article, function(err){
-        if(err){
-            console.log(err);
-            return;
-        }
-        else{
-           res.redirect('/'); 
-        }
-    });
-});  
-
-app.delete('/article/:id', function(req, res){
-    let query = { _id:req.params.id}
-
-    Article.remove(query, function(err){
-
-        if(err){
-            console.log(err);
-        }
-        
-        res.send('success');
-    });
-});
-
+//route files
+let articles = require('./routes/articles');
+let users = require('./routes/users');
+app.use('/articles', articles);
+app.use('/users', users);
 //start server
 app.listen(3000,function(){
     console.log('Server started on port 3000');

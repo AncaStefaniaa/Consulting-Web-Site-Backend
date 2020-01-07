@@ -1,0 +1,11 @@
+.alert-error{
+    color:#a94442;
+    background-color: pink;
+    border-color: aquamarine;
+}
+
+.alert-success_msg{
+    color:#4e8042;
+    background-color: pink;
+    border-color: aquamarine;
+}

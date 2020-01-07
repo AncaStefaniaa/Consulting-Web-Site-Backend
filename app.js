@@ -6,7 +6,12 @@ const expressLayouts = require('express-ejs-layouts');
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const session = require('express-session');
-mongoose.connect('mongodb://localhost/backend');
+const config = require('./config/database');
+const passport = require('passport');
+const ejsLint = require('ejs-lint');
+
+//connect to database
+mongoose.connect(config.database);
 let db = mongoose.connection;
 
 
@@ -14,12 +19,15 @@ let db = mongoose.connection;
 db.once('open',function(){
     console.log('Connected to MongoDB');
 })
+
 //check for db errors
 db.on('error',function(){
     console.log(err);
 });
+
 //init app
 const app = express();
+//DECOMENTEAZA PT EJS
 /*app.use(expressLayouts);
 app.set('view engine','ejs');*/
 //bring in models
@@ -27,7 +35,11 @@ let Article = require('./models/article');
 
 //load view engine
 app.set('views',path.join(__dirname, 'views'));
+
+//COMENTEAZA
 app.set('view engine', 'pug');
+
+
 
 //set public folder
 app.use(express.static(path.join(__dirname,'public')));
@@ -74,7 +86,23 @@ app.use(expressValidator({
   }
 }));
 
-//home route
+
+//passport config
+require('./config/passport')(passport);
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.get('*', function(req, res, next){
+    res.locals.user = req.user || null;
+    next();
+});
+
+
+//trb sa mai bag aici ceva ca sa pornesc pagina principala
+
+//home route//blog route
 app.get('/', function(req,res){
    let articles = Article.find({},function(err, articles){
         if(err){
@@ -89,11 +117,15 @@ app.get('/', function(req,res){
     });
 });
 
+
+//aici incarc modelele pt articol si useri
 //route files
 let articles = require('./routes/articles');
 let users = require('./routes/users');
 app.use('/articles', articles);
 app.use('/users', users);
+
+
 //start server
 app.listen(3000,function(){
     console.log('Server started on port 3000');

@@ -13,6 +13,14 @@ let articleSchema = mongoose.Schema({
   body:{
     type: String,
     required: true
+  }, 
+  image:{
+    type:String,
+    required: true
+  },
+  postDate:{
+    type:String,
+    required:true
   }
 });
 

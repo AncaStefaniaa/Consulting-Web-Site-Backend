@@ -22,7 +22,8 @@ router.post('/add',function(req,res){
 
     //check if fields are not empty
     req.checkBody('title','Title is required').notEmpty();
-    //req.checkBody('author','Author is required').notEmpty();
+    //------MODIFICAREEE------//
+    req.checkBody('image','Image is required').notEmpty();
     req.checkBody('body','Body is required').notEmpty();
 
     //get errors
@@ -37,6 +38,9 @@ router.post('/add',function(req,res){
             article.title = req.body.title;
             article.author = req.user._id;
             article.body = req.body.body;
+            //---MODIFICAREEE----//
+            article.postDate = GetDate();
+            article.image = req.body.image;
 
             article.save(function(err){
                 if(err){
@@ -71,8 +75,11 @@ router.get('/edit/:id',ensureAuthenticated,function(req,res){
 router.post('/edit/:id',function(req,res){
     let article = {};
     article.title = req.body.title;
-    article.author = req.body.author;
+    article.author = req.user._id;
     article.body = req.body.body;
+    //---MODIFICAREEE----//
+    article.postDate = GetDate();
+    article.image = req.body.image;
 
     let query = {_id:req.params.id}
 
@@ -133,7 +140,7 @@ router.get('/:id',function(req,res){
  
  //access
  function ensureAuthenticated(req,res,next){
-     if(req.isAuthenticated()){
+     if(req.isAuthenticated() && req.user.admin == true){// aici admin cica
          return next();
      }
      else{
@@ -141,4 +148,21 @@ router.get('/:id',function(req,res){
          res.redirect('/users/login');
      }
  }
+
+ function GetDate (){
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+        } 
+
+    if (mm < 10) {
+        mm = '0' + mm;
+    } 
+    var today = dd + '/' + mm + '/' + yyyy;
+    return today;
+}
 module.exports = router;

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<head>
+    <meta name="author" content="Ilicea Anca">
+    <meta name ="keywords" content="proiect, web, prezentare, cafenea">
+    <meta name="description" content="Our story about coffee is here">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <!--favicon setup-->
+    <link rel="apple-touch-icon" sizes="180x180" href="../images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16x16.png">
+    <link rel="manifest" href="../favicon/site.webmanifest">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/custom.css">
+    <!--- <link rel="stylesheet" type="text/css" href="css1.css">-->
+    <title>Ilicea Anca</title>
+</head>
+<body>
+<!------HEADER------>
+<header>
+    <div class="row">
+        <div class="col-sm-12">
+        <!--<h1 class="logo">ANCA ILICEA</h1>-->
+        <div class="text-center white"> 
+            <img src="../images/txt.png" class="img-logo">
+        </div>  
+    </div>
+    </div>
+    
+    <!-------NAV------>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark  bg-dark">
+        <a class="navbar-brand" href="/">Anca Ilicea</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/despremine">Despre mine<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/parcurs">Parcurs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/blog">Blog</a>
+                <% if(locals.user) { %>
+                    <% if(locals.user.admin == true) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href='/articles/add'>Add an article</a> 
+                        </li>
+                    <% } %>
+                    <li class="nav-item">
+                        <a class="nav-link" href='/users/logout'> Logout </a> 
+                    </li>
+                <% }else {%>
+                    <li class="nav-item">
+                        <a class="nav-link" href='/users/login'> Login </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='/users/register'> Register </a>
+                    </li>
+                <% } %>
+
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="planificare.html">Planificare Consultanta</a>
+            </li>
+            
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+    </header>
+
+    
+
+    <%- body %>
+          
+    <%- messages() %>
+    <% if(locals.errors) { %>  
+        <% for(var i = 0; i < errors.length; i++) { %>
+            <div class="alert alert-danger"> 
+                <%= errors[i].msg %>
+            </div>
+        <% } %>
+    <% } %>
+
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+          <span class="text-muted">CopyRight 2020</span>
+        </div>
+      </footer>
+</body>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src='../js/main.js'></script>
+<script src="../js/js1.js"></script>
+
+</html>

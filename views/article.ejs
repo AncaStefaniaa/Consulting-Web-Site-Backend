@@ -1,0 +1,32 @@
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+
+        <!-- Title -->
+        <h1 class="mt-4"><%=article.title%></h1>
+
+        <!-- Author -->
+        <p class="lead">
+          Written by <%=author%>
+        </p>
+        <hr>
+        <p>Posted on <%=article.postDate%></p>
+        <hr>
+        <img class="img-fluid rounded" src="<%=article.image%>">
+        <hr>
+        <p class="lead">
+            <%=article.body%>
+        </p>
+        <!-- daca userul care a publicat articolul este
+        logat atunci acesta va putea modifica continutul articolului
+        respectiv sterge articolul din baza de date -->
+        <% if(locals.user) { %>
+            <%  if(locals.user.id==article.author) { %>
+                     <a class="btn btn-default" href='/articles/edit/<%=article._id%>'> Edit</a>
+                     <a class="btn btn-danger delete-article" href='/blog' data-id='<%=article._id%>'> Delete </a>
+             <% } %>
+         <% } %>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../images/favicon-16x16.png">
+  
+  <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/custom.css">
+
+</head>
+
+<body>
+    
+    <form method='POST' action='/articles/edit/<%=article._id%>'>
+      <div class="imgcontainer">
+        <img src="../../images/edit.jpg" alt="Avatar" class="avatar" style="width:290px; margin-top:47px;">
+      </div>
+    
+      <div class="container">
+        <label for="title"><b>Title</b></label>
+        <input type="text" placeholder="Enter title" name="title">
+
+        <label for="image"><b>Image</b></label>
+        <input type="text" placeholder="Enter image adress" name="image">
+    
+        <label for="body"><b>Body</b></label>
+        <textarea class="form-control" placeholder="Write here..." name='body'></textarea>
+            
+        <button type="submit" value="Submit">Edit</button>
+      </div>
+    </form>
+  </body>

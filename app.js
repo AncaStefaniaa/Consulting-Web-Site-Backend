@@ -28,8 +28,8 @@ db.on('error',function(){
 //init app
 const app = express();
 //DECOMENTEAZA PT EJS
-/*app.use(expressLayouts);
-app.set('view engine','ejs');*/
+app.use(expressLayouts);
+app.set('view engine','ejs');
 //bring in models
 let Article = require('./models/article');
 
@@ -37,7 +37,7 @@ let Article = require('./models/article');
 app.set('views',path.join(__dirname, 'views'));
 
 //COMENTEAZA
-app.set('view engine', 'pug');
+//app.set('view engine', 'pug');
 
 
 
@@ -87,12 +87,13 @@ app.use(expressValidator({
 }));
 
 
-//passport config
-require('./config/passport')(passport);
+
 //passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
+//passport config
+require('./config/passport')(passport);
 
 app.get('*', function(req, res, next){
     res.locals.user = req.user || null;
@@ -104,19 +105,36 @@ app.get('*', function(req, res, next){
 
 //home route//blog route
 app.get('/', function(req,res){
+        res.render('index',{
+        title:'Index',
+    });
+});
+
+app.get('/parcurs', function(req,res){
+        res.render('parcurs',{
+        title:'Parcurs',
+    });
+});
+
+app.get('/despremine', function(req,res){
+        res.render('despremine',{
+        title:'Despre mine',
+    });
+});
+
+app.get('/blog', function(req,res){
    let articles = Article.find({},function(err, articles){
         if(err){
             console.log(err)
         }
         else{
-        res.render('index',{
+        res.render('blog',{
         title:'Add articles',
         articles: articles
     });
     }
     });
 });
-
 
 //aici incarc modelele pt articol si useri
 //route files

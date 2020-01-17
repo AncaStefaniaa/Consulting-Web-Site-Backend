@@ -1,30 +1,33 @@
-<div class="container" style="margin-top:50px">
+    <div class="container" style="margin-top:50px">
 
-    <div class="row">
 
-      <!-- Blog Entries Column -->
-      <div class="col-md-8">
-
-        <h1 class="my-4">Articles 
-          <small>-- Iosif's thoughts</small>
-        </h1>
-
-        <!-- Blog Post -->
-        <% for(var i = articles.length - 1; i >= 0; i--) { %>
-        <div class="card mb-4">
-          <img class="card-img-top" src="<%=articles[i].image%>" alt="Card image cap">
-          <div class="card-body">
-            <h2 class="card-title"><%=articles[i].title%></h2>
-            <p class="card-text">
-                <%articles[i].body%>
-            </p>    
-            <a href="/articles/<%= articles[i].id %>" class="btn btn-primary">Read More &rarr;</a>
-          </div>
-          <div class="card-footer text-muted">
-            Posted on <%=articles[i].postDate%>
-          </div>
+      <!--descrierea paginii-->
+      <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark">
+        <div class="col-md-6 px-0">
+          <h1 class="display-4 font-italic">In acest loc poti gasi articolele in ordine cronologica</h1>
+          <p class="lead my-3">Postarile de pe blog pot fi modificate sau sterse doar de admin</p>
+          <p class="lead mb-0"><a href="#" class="text-white font-weight-bold">Continua sa citesti cu drag...</a></p>
         </div>
-        <% } %>
       </div>
-    </div>
+      <!--luam fiecare articol la rand-->
+      <% for(var i = articles.length - 1; i >= 0; i--) { %>
+
+      <div class="col-md-8">
+        <div class="card flex-md-row mb-4 box-shadow h-md-250 article-head-border">
+          <div class="card-body d-flex flex-column align-items-start">
+            
+            <h3 class="mb-0">
+              <a class="text-dark" href="#"><%=articles[i].title%></a>
+            </h3>
+            <div class="mb-1 text-muted"><%=articles[i].postDate%></div>
+            <p class="card-text mb-auto">
+              <%articles[i].body%>
+            </p>
+            <a href="/articles/<%= articles[i].id %>">Continue reading</a>
+          </div>
+          <img class="card-img-right flex-auto d-none d-md-block" src="<%=articles[i].image%>" alt="Card image cap">
+        </div>
+      </div>
+      <% } %>
+        
 </div>

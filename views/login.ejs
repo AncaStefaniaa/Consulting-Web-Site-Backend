@@ -2,17 +2,17 @@
   
     <form method='POST' action='/users/login'>
       <div class="imgcontainer">
-        <img src="../images/bg.jpg" alt="Avatar" class="avatar" style="width:290px; margin-top:47px;">
+        <img src="../images/login.jpg" alt="Avatar" class="avatar">
       </div>
     
       <div class="container">
-        <label for="username"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username">
+        <label for="username" class="sr-only"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="username" class="form-control">
     
-        <label for="password"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="password">
+        <label for="password" class="sr-only"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="password" class="form-control">
             
-        <button type="submit" value="Submit">Login</button>
+        <button type="submit" value="Submit" class="btn btn-lg btn-primary btn-block btn-dark">Login</button>
       </div>
     </form>
   </body>

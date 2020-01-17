@@ -27,31 +27,35 @@ $(document).keypress(function(event){
      $("#slide2").css("background-color","pink");
 })
 */
-var progressLastChange = 0;
-window.localStorage.setItem("nameOfItem", 0);
-var getItem = localStorage.getItem("nameOfItem");
-console.log(getItem);
+var progressbarPagesNO = 5;
+var progressbarUnit = 100 / progressbarPagesNO;
+var progressbar = $('.progress-bar');
+var currentProgressbarPage;
 
-
-function setProgressLastChange(){
-    $(".progress-bar").attr("style","width:" + getItem );
+if(localStorage.getItem('currentProgressbarPage') === null){
+    localStorage.setItem('currentProgressbarPage', 0);
 }
+
+var currentProgress = parseInt(localStorage.getItem('currentProgressbarPage'));
+
 
 function changeProgressState(){
     var parent = $(".progress-bar").parent().width();
     var child = $(".progress-bar").width();
-    var result = (child/parent*100)+ 10 + "%";
-    $(".progress-bar").attr("style","width:" + result );
-    window.localStorage.setItem("nameOfItem", result);
+    var result = (child/parent*100)+ 20 + "%";
+    //$(".progress-bar").attr("style","width:" + result );
+    progressbar.css('width', (progressbarUnit * (currentProgress)) + '%'); //the second parameter is a string, that's why it works 
+    progressbar.attr('aria-valuenow', progressbarUnit * (currentProgress));
+    localStorage.setItem('currentProgressbarPage', currentProgress);
     getItem = result;
-    //console.log(result);
+
+    console.log(currentProgress);
 }
 var index = 0;
+function changeProgress(key){
 
-$(document).keydown(function(event){
-    var x = event.which;
     
-    switch(x){
+    switch(key){
         case 65:
         case 66:
         case 67:
@@ -83,53 +87,101 @@ $(document).keydown(function(event){
             break;
            
         case 37:
+         if(currentProgress != 0){
+                --currentProgress;
+            }
             changeProgressState();
             $("#slide2").css("background-color","black");
+            index--;
             break;
 
         case 39:
             if(index === 0){
-                console.log(index);
+                //console.log(index);
+                if(currentProgress != progressbarPagesNO){
+                ++currentProgress;
+                }
                 changeProgressState();
                 //$("#slide1").fadeOut();
                 //$("#slide2").fadeIn(1000);
+                
                 $("#slide1").css("display","none");
                 $("#slide2").css("display","block");
+                $(".h1-trans").css("transform", "rotate(20deg)");
+                $(".h1-trans").css("transform", "rotate(-20deg)");
                 index++;
+                
             }
             else if(index === 1){
-                console.log(index);
+                //console.log(index);
+                if(currentProgress != progressbarPagesNO){
+                ++currentProgress;
+                }
+                index++;
                 changeProgressState();
                 $("#slide1").css("display","none");
                 $("#slide2").css("display","block");
-               
-                index++;
+                
+                
             }
             else if(index === 2){
-                console.log(index);
+                //console.log(index);
+                if(currentProgress != progressbarPagesNO){
+                ++currentProgress;
+                }
                 changeProgressState();
-                $(".image-animation").css("display","block");
-                $(".image-animation").css("position","absolute");
+                
                 //la event nu mai recunostea positia relativa a acestui element nu stiu de ce
                 //si a trebuit sa o setez din nou
-                $(".slide-show-container").css("position","relative");
-                $(".image-animation").css("top","0");
+                $("#slide3").css("display","block");
+                index++;
+               
+            }
+
+            else if(index === 3){
+                //console.log(index);
+                if(currentProgress != progressbarPagesNO){
+                ++currentProgress;
+                }
+                changeProgressState();
+                $("#slide4").css("display","block");
+               
+                //la event nu mai recunostea positia relativa a acestui element nu stiu de ce
+                //si a trebuit sa o setez din nou
+                index++;
+            }
+
+            else if(index === 4){
+                //console.log(index);
+                 if(currentProgress != progressbarPagesNO){
+                ++currentProgress;
+                }
+                changeProgressState();
+                $("#slide5").css("display","block");
+                //la event nu mai recunostea positia relativa a acestui element nu stiu de ce
+                //si a trebuit sa o setez din nou
+                
+               index++;
+               
             }
             break;    
     }
-})
 
-
+}
+/*
 $("#slide2").click(function () {
     $("#slide2").fadeOut();
 })
-
-
-
 
 $("input").keypress(function (event) {
   if(event.which === 13)
   alert("YOU HIT ENTER");
 })
+*/
 
+document.addEventListener('keydown', function(event) {
 
+    var key = event.which;
+    changeProgress(key);
+    
+});

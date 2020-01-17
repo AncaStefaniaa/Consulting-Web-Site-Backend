@@ -9,6 +9,7 @@ const session = require('express-session');
 const config = require('./config/database');
 const passport = require('passport');
 const ejsLint = require('ejs-lint');
+const nodemailer = require('nodemailer');
 
 //connect to database
 mongoose.connect(config.database);
@@ -122,6 +123,13 @@ app.get('/despremine', function(req,res){
     });
 });
 
+app.get('/consultanta', function(req,res){
+        res.render('consultanta',{
+        title:'Consultanta',
+    });
+});
+
+
 app.get('/blog', function(req,res){
    let articles = Article.find({},function(err, articles){
         if(err){
@@ -140,9 +148,10 @@ app.get('/blog', function(req,res){
 //route files
 let articles = require('./routes/articles');
 let users = require('./routes/users');
+let plans = require('./routes/plans');
 app.use('/articles', articles);
 app.use('/users', users);
-
+app.use('/plans', plans)
 
 //start server
 app.listen(3000,function(){
